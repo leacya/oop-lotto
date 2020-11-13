@@ -1,7 +1,5 @@
 package oop.anneleacy;
 
-
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
@@ -15,49 +13,14 @@ public class App
     public static void main(String[] args) throws FileNotFoundException
     {
         Scanner keyboard = new Scanner(System.in);
+        final int EXIT_OPTION = 14;
 
-        System.out.println("Are you an admin?\n[1]Yes\n[2]No");
-        int admin = keyboard.nextInt();
-
-        if (admin == 1)
-        {
-            final String passwordSet = "test";
-            int attempts = 3;
-            String passwordEntered = "";
-
-            System.out.print("");
-            passwordEntered = keyboard.nextLine();
-
-            while (attempts-- > 0 && !passwordSet.equals(passwordEntered))
-            {
-                System.out.print("Enter your password: ");
-                passwordEntered = keyboard.nextLine();
-                if (passwordEntered.equals(passwordSet))
-                {
-                    System.out.println("\nWelcome!\n");
-                }
-                else
-                {
-                    System.out.println("Incorrect. Number of attempts remaining: " + attempts);
-                }
-            }
-            if (!passwordSet.equals(passwordEntered))
-            {
-                System.out.println("!! Access denied !!");
-                System.exit(1);
-            }
-        }
 
         Game g1 = new Game(5000, 3000, 30);
+        g1.readData("ticketData.txt");
 
-        Scanner TicketData = new Scanner(new File("ticketData.txt"));
 
-        while (TicketData.hasNext())
-        {
-            g1.addTicket(new Ticket(TicketData.next(), TicketData.next(), TicketData.nextLong(), TicketData.nextInt(), TicketData.nextInt(), TicketData.nextInt(), TicketData.nextInt()));
-        }
-
-        g1.drawNumbers();
+        g1.drawNumbers();  //draw the winning numbers for this run of the game
 
         System.out.println("Winning numbers = " + g1.getWinningNumbers());
 
@@ -66,103 +29,121 @@ public class App
 
         int option;
 
-        g1.displayMenu();
+        displayMenu();
         System.out.print("\nPlease enter option:");
         option = keyboard.nextInt();
         String temp = keyboard.nextLine();
-        while (option != 14)
+        while (option != EXIT_OPTION)
         {
-            if (option == 1)
+            switch (option)
             {
-                g1.displayAllTickets();
-            }
-            else if (option == 2)
-            {
-                g1.displayAllMatches();
-            }
-            else if (option == 3)
-            {
-                g1.displayNonUniqueTickets();
-            }
-            else if (option == 4)
-            {
-                g1.displayInvalidRangeTickets();
-            }
-            else if (option == 5)
-            {
-                System.out.println("Enter a valid name");
-                String name = keyboard.nextLine();
-
-                g1.displayTicket(name);
-            }
-            else if (option == 6)
-            {
-                System.out.println("Enter x");
-                int x = keyboard.nextInt();
-
-                g1.displayMatches(x);
-            }
-            else if (option == 7)
-            {
-                System.out.println("Enter address");
-                String address = keyboard.nextLine();
-
-                g1.displayPlayersWithAddress(address);
-            }
-            else if (option == 8)
-            {
-                System.out.println("Enter the number");
-                int num = keyboard.nextInt();
-
-                int count = g1.countWhoChoseNumber(num);
-                System.out.println("\n" + count + " people chose number " + num + " in their ticket");
-            }
-            else if (option == 9)
-            {
-                System.out.println("Enter a valid name");
-                String name = keyboard.nextLine();
-
-                g1.displayMatchesByName(name);
-            }
-            else if (option == 10)
-            {
-                System.out.println(g1);
-            }
-            else if (option == 11)
-            {
-                g1.displayWinners();
-            }
-            else if (option == 12)
-            {
-                g1.displayTicketsWithSameName();
-            }
-            else if (option == 13)
-            {
-                System.out.println("Choose Format\n1. Ascending\n2. Descending");
-                int num = keyboard.nextInt();
-
-                if (num == 1)
+                case 1:
+                    g1.displayAllTickets();
+                    break;
+                case 2:
+                    g1.displayAllMatches();
+                    break;
+                case 3:
+                    g1.displayNonUniqueTickets();
+                    break;
+                case 4:
+                    g1.displayInvalidRangeTickets();
+                    break;
+                case 5:
                 {
-                    g1.displayPlayersAsc();
+                    System.out.println("Enter a valid name");
+                    String name = keyboard.nextLine();
+
+                    g1.displayTicket(name);
+                    break;
                 }
-                else if (num == 2)
+                case 6:
+                    System.out.println("Enter x");
+                    int x = keyboard.nextInt();
+
+                    g1.displayMatches(x);
+                    break;
+                case 7:
+                    System.out.println("Enter address");
+                    String address = keyboard.nextLine();
+
+                    g1.displayPlayersWithAddress(address);
+                    break;
+                case 8:
                 {
-                    g1.displayPlayersDesc();
+                    System.out.println("Enter the number");
+                    int num = keyboard.nextInt();
+
+                    int count = g1.countWhoChoseNumber(num);
+                    System.out.println("\n" + count + " people chose number " + num + " on their ticket");
+                    break;
                 }
-                else
+                case 9:
                 {
-                    System.out.println("Choose 1 or 2");
+                    System.out.println("Enter a valid name");
+                    String name = keyboard.nextLine();
+
+                    g1.displayMatchesByName(name);
+                    break;
                 }
+                case 10:
+                    System.out.println(g1);
+                    break;
+                case 11:
+                    g1.displayWinners();
+                    break;
+                case 12:
+                    g1.displayTicketsWithSameName();
+                    break;
+                case 13:
+                {
+                    System.out.println("Choose Format\n1. Ascending\n2. Descending");
+                    int num = keyboard.nextInt();
+
+                    if (num == 1)
+                    {
+                        g1.displayPlayersAsc();
+                    }
+                    else if (num == 2)
+                    {
+                        g1.displayPlayersDesc();
+                    }
+                    else
+                    {
+                        System.out.println("Choose 1 or 2");
+                    }
+                    break;
+                }
+                default:
+                    System.out.println("please enter valid option [1,14]");
+                    break;
             }
-            else
-            {
-                System.out.println("please enter valid option [1,14]");
-            }
-            g1.displayMenu();
+            displayMenu();
             System.out.print("Please enter option:");
             option = keyboard.nextInt();
             String tempp = keyboard.nextLine();
         }
+    }
+    /**
+     * displays the menu of options
+     */
+    public static void displayMenu()
+    {
+        System.out.println("\nPlay Lotto Game");
+        System.out.println("1. DISPLAY ALL TICKETS");
+        System.out.println("2. DISPLAY ALL MATCHES");
+        System.out.println("3. DISPLAY PEOPLE WITH NON-UNIQUE NUMBERS IN TICKET");
+        System.out.println("4. DISPLAY PEOPLE WITH INVALID RANGE TICKETS");
+        System.out.println("5. DISPLAY TICKET WITH NAME");
+        System.out.println("6. DISPLAY PEOPLE WITH 'x' MATCHES");
+        System.out.println("7. DISPLAY PLAYERS BY ADDRESS");
+        System.out.println("8. DISPLAY NUMBER OF PEOPLE WHO CHOSE A PARTICULAR NUMBER");
+        System.out.println("9. DISPLAY MATCHES BY NAME");
+        System.out.println("10. DISPLAY GAME");
+        System.out.println("11. DISPLAY WINNERS");
+        System.out.println("12. DISPLAY TICKETS WITH SAME NAME");
+        System.out.println("13. DISPLAY PLAYERS IN SORTED FORMAT");
+        System.out.println("14. Exit");
     }
 
 }

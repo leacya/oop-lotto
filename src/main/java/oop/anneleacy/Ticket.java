@@ -177,10 +177,22 @@ public class Ticket
         return count;
     }
 
+//    @Override
+//    public String toString()
+//    {
+//        return "Ticket{" +
+//                "name='" + name + '\'' +
+//                ", address='" + address + '\'' +
+//                ", phone=" + phone +
+//                ", numsChosen=" + numsChosen +
+//                '}';
+//    }
+
+
     @Override
     public String toString()
     {
-        return String.format("\nName: %-10s, Address: %-10s, Phone: %-10s, Ticket Numbers: %-15s", name, address, phone, numsChosen);
+        return String.format("Name: %-10s, Address: %-10s, Phone: %-10s, Ticket Numbers: %-15s", name, address, phone, numsChosen);
     }
 }
 

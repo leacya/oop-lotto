@@ -1,12 +1,14 @@
 package oop.anneleacy;
 
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+import java.util.Scanner;
 
 /**
- *
  * @author Himansh Arora
  */
 public class Game
@@ -15,7 +17,7 @@ public class Game
     private ArrayList<Ticket> tickets = new ArrayList<>();
     private ArrayList<Integer> winningNumbers = new ArrayList<>();
     private int jackpotAmount;
-    private int Match3Amount;
+    private int match3Amount;
     private int maxRange;
 
     public Game(ArrayList<Ticket> tickets, ArrayList<Integer> winningNumbers, int jackpotAmount, int Match3Amount, int maxRange)
@@ -23,7 +25,7 @@ public class Game
         this.tickets = tickets;
         this.winningNumbers = winningNumbers;
         this.jackpotAmount = jackpotAmount;
-        this.Match3Amount = Match3Amount;
+        this.match3Amount = Match3Amount;
         this.maxRange = maxRange;
     }
 
@@ -35,7 +37,7 @@ public class Game
     public Game(int jackpotAmount, int Match3Amount, int maxRange)
     {
         this.jackpotAmount = jackpotAmount;
-        this.Match3Amount = Match3Amount;
+        this.match3Amount = Match3Amount;
         this.maxRange = maxRange;
         tickets = new ArrayList<>();
     }
@@ -90,7 +92,7 @@ public class Game
      */
     public int getMatch3Amount()
     {
-        return Match3Amount;
+        return match3Amount;
     }
 
     /**
@@ -140,7 +142,7 @@ public class Game
      */
     public void setMatch3Amount(int Match3Amount)
     {
-        this.Match3Amount = Match3Amount;
+        this.match3Amount = Match3Amount;
     }
 
     /**
@@ -155,7 +157,6 @@ public class Game
 
     /**
      * displays all the tickets on the Game
-     *
      */
     public void displayAllTickets()
     {
@@ -177,7 +178,7 @@ public class Game
         {
             if (names.equalsIgnoreCase(tickets.get(i).getName()))
             {
-                System.out.println("\n" + names + "'s Ticket= " + tickets.get(i));
+                System.out.println("\n" + names + "'s Ticket = " + tickets.get(i));
                 checkValid = true;
             }
         }
@@ -188,11 +189,8 @@ public class Game
     }
 
     /**
-     *
-     *
      * generates an Integer ArrayList of 4 distinct randomly generated, sorted
      * numbers
-     *
      */
     public void drawNumbers()
     {
@@ -200,12 +198,14 @@ public class Game
         for (int i = 0; i < 4; i++)
         {
             winningNumbers.add(rand.nextInt(maxRange) + 1);
-            for (int j = 0; j < i; j++)
+            int j = 0;
+            while (j < i)
             {
                 if (winningNumbers.get(i) == winningNumbers.get(j))
                 {
                     i--;
                 }
+                j++;
             }
         }
         Collections.sort(winningNumbers);
@@ -284,7 +284,6 @@ public class Game
 
     /**
      * displays the people who chose Invalid range of numbers
-     *
      */
     public void displayInvalidRangeTickets()
     {
@@ -294,7 +293,7 @@ public class Game
             {
                 if (tickets.get(i).getNumsChosen().get(j) < 1 || tickets.get(i).getNumsChosen().get(j) > maxRange)
                 {
-                    System.out.println("\n" +tickets.get(i).getName());
+                    System.out.println("\n" + tickets.get(i).getName());
                 }
             }
         }
@@ -302,7 +301,6 @@ public class Game
 
     /**
      * displays the people who chose a same number more than once
-     *
      */
     public void displayNonUniqueTickets()
     {
@@ -314,52 +312,34 @@ public class Game
                 {
                     if (k > j && tickets.get(i).getNumsChosen().get(j) == tickets.get(i).getNumsChosen().get(k))
                     {
-                        System.out.println("\n" +tickets.get(i).getName());
+                        System.out.println("\n" + tickets.get(i).getName());
                     }
                 }
             }
         }
     }
 
-    /**
-     * displays the menu of options
-     *
-     */
-    public void displayMenu()
-    {
-        System.out.println("\nPlay Lotto Game");
-        System.out.println("1. DISPLAY ALL TICKETS");
-        System.out.println("2. DISPLAY ALL MATCHES");
-        System.out.println("3. DISPLAY PEOPLE WITH NON-UNIQUE NUMBERS IN TICKET");
-        System.out.println("4. DISPLAY PEOPLE WITH INVALID RANGE TICKETS");
-        System.out.println("5. DISPLAY TICKET WITH NAME");
-        System.out.println("6. DISPLAY PEOPLE WITH 'x' MATCHES");
-        System.out.println("7. DISPLAY PLAYERS BY ADDRESS");
-        System.out.println("8. DISPLAY NUMBER OF PEOPLE WHO CHOSE A PARTICULAR NUMBER");
-        System.out.println("9. DISPLAY MATCHES BY NAME");
-        System.out.println("10. DISPLAY GAME");
-        System.out.println("11. DISPLAY WINNERS");
-        System.out.println("12. DISPLAY TICKETS WITH SAME NAME");
-        System.out.println("13. DISPLAY PLAYERS IN SORTED FORMAT");
-        System.out.println("14. Exit");
-    }
 
-    //some additional improvements
+
+//     Some additional improvements
+//
+//
+
+
     /**
      * displays all the statistics of the matches in Game
-     *
      */
     public void displayAllMatches()
     {
+        System.out.printf("\n%-10s%4s\n", "Name", "Matches");
         for (int i = 0; i < tickets.size(); i++)
         {
-            System.out.println("\n" +tickets.get(i).getName() + " has got " + tickets.get(i).howManyMatches(winningNumbers) + " matches");
+            System.out.printf("%-10s%4d\n",tickets.get(i).getName(), tickets.get(i).howManyMatches(winningNumbers));
         }
     }
 
     /**
      * displays the people who won an amount
-     *
      */
     public void displayWinners()
     {
@@ -384,8 +364,7 @@ public class Game
     }
 
     /**
-     * displays the people with same names
-     *
+     * Displays the names of people that have Ticket with the same names
      */
     public void displayTicketsWithSameName()
     {
@@ -403,7 +382,7 @@ public class Game
     }
 
     /**
-     * displays the matches of people with the name entered
+     * Displays the number of matching numbers for person(s) called name
      *
      * @param name the name entered
      */
@@ -415,7 +394,7 @@ public class Game
         {
             if (name.equalsIgnoreCase(tickets.get(i).getName()))
             {
-                System.out.println("\n" +name + "'s Ticket= " + tickets.get(i).howManyMatches(winningNumbers) + " matches");
+                System.out.println("\n" + name + "'s Ticket= " + tickets.get(i).howManyMatches(winningNumbers) + " matches");
                 checkValid = true;
             }
         }
@@ -426,42 +405,56 @@ public class Game
     }
 
     /**
-     * displays the names in an ascending sorted manner
-     *
+     * Display all the player names in an ascending order
      */
     public void displayPlayersAsc()
     {
-        ArrayList<String> SortedNames = new ArrayList<String>();
+        ArrayList<String> SortedNames = new ArrayList<>();
         for (int i = 0; i < tickets.size(); i++)
         {
             SortedNames.add(tickets.get(i).getName());
         }
         Collections.sort(SortedNames);
-        System.out.println("\n" +SortedNames);
+        System.out.println("\n" + SortedNames);
 
     }
 
     /**
-     * displays the names in a descending sorted manner
-     *
+     * Display all the player names in an descending order
      */
     public void displayPlayersDesc()
     {
-        ArrayList<String> SortedNames = new ArrayList<String>();
+        ArrayList<String> SortedNames = new ArrayList<>();
         for (int i = 0; i < tickets.size(); i++)
         {
             SortedNames.add(tickets.get(i).getName());
         }
         Collections.sort(SortedNames);
         Collections.reverse(SortedNames);
-        System.out.println("\n" +SortedNames);
+        System.out.println("\n" + SortedNames);
 
     }
 
     @Override
     public String toString()
     {
-        return "Game{" + "Tickets=" + tickets + ", \nWinning Numbers=" + winningNumbers + ", \nJackpot Amount=" + jackpotAmount + ", \nMatch3 Amount=" + Match3Amount + ", \nMaximum Range=" + maxRange + '}';
+        return "Game{" + "Tickets=" + tickets + ", \nWinning Numbers=" + winningNumbers + ", \nJackpot Amount=" + jackpotAmount + ", \nMatch3 Amount=" + match3Amount + ", \nMaximum Range=" + maxRange + '}';
     }
+
+    /**
+     * Read the Ticket details from text file filename
+     * @param fileName
+     * @throws FileNotFoundException
+     */
+    public void readData(String fileName) throws FileNotFoundException
+    {
+        Scanner TicketData = new Scanner(new File(fileName));
+
+        while (TicketData.hasNext())
+        {
+            addTicket(new Ticket(TicketData.next(), TicketData.next(), TicketData.nextLong(), TicketData.nextInt(), TicketData.nextInt(), TicketData.nextInt(), TicketData.nextInt()));
+        }
+    }
+
 }
 
